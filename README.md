@@ -8,7 +8,9 @@
 
 ## 准备工作
 
-### 第一步：下载balenaEtcher软件
+### 烧录镜像
+
+#### 第一步：下载balenaEtcher软件
 
 进入[balenaEtcher官网](https://etcher.balena.io/ "balenaEtcher")
 
@@ -21,7 +23,7 @@
 
 ![balenaEtcher](docs/images/baenaEtcher_downlode_windows.png "balenaEtcher")
 
-### 第二步：下载orange pi的ubuntu官方镜像
+#### 第二步：下载orange pi的ubuntu官方镜像
 
 使用百度云盘下载**orange pi的ubuntu官方镜像**
 
@@ -36,7 +38,7 @@
 
 ![balenaEtcher](docs/images/orangepi_ubuntu_img.png)
 
-### 第三步：使用balenaEtcher烧录orange pi的ubuntu镜像到SD卡中
+#### 第三步：使用balenaEtcher烧录orange pi的ubuntu镜像到SD卡中
 
 选择要**烧录的文件**  
 ![balenaEtcher](docs/images/balenaEtcher_choose_file.png)
@@ -52,7 +54,7 @@
 
 烧录完成后，将SD卡插入**Orange Pi AIpro(20T)开发板**上
 
-### 第四步：进入系统
+### 进入系统
 
 1. 为 `Orange Pi AIpro(20T)` 插上键盘、鼠标和显示屏。
 2. 按开机键
@@ -60,7 +62,7 @@
 4. 点击屏幕右上角的WIFI图标并连接可用的网络。
 5. 打开终端
 
-## 创建虚拟环境
+## 快速开始
 
 我们的Ubuntu系统已预安装[Conda](https://www.anaconda.com/docs/getting-started/miniconda/main)，执行如下命令创建一个新环境并安装`python3.11`与`ffmpeg`。
 
@@ -70,11 +72,19 @@
 
     conda activate lerobot
 
+克隆本项目：
+
+    git clone --recurse-submodules https://github.com/hexchip/lerobot-on-ascend.git
+
+进入项目目录
+
+    cd lerobot-on-ascend
+
 安装Lerobot。
 
     pip install -e "lerobot[feetech]"
 
-安装CANN的依赖
+安装CANN所需的Python依赖
 
     pip install -r /requirements.txt
 
@@ -114,7 +124,7 @@
 更多`Ascend Extension for PyTorch`细节请参考[官方仓库](https://gitee.com/ascend/pytorch)。
 
 至此，环境搭建完成。  
-后续操作请参考[Lerobot官方](https://github.com/huggingface/lerobot)教程。
+后续操作请参考[Lerobot官方](https://huggingface.co/docs/lerobot/so100)教程。
 
 
 ## 扩展知识1: 如何解决依赖冲突
@@ -129,7 +139,7 @@
 
 由此可知，我们需要重新安装Python，使其与Lerobot兼容
 
-因为CANN又依赖Python的版本，如下图所示
+因为CANN又依赖Python，如下图所示
 
 ![Ascend_cann_python_need](docs/images/Ascend_cann_python_need.png)
 
