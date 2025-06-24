@@ -123,13 +123,78 @@
 
 更多`Ascend Extension for PyTorch`细节请参考[官方仓库](https://gitee.com/ascend/pytorch)。
 
-至此，环境搭建完成。  
-后续操作请参考[Lerobot官方](https://huggingface.co/docs/lerobot/so100)教程。
+至此，环境搭建完成。
+
+## 机械臂配置
+
+### 端口匹配
+
+执行以下命令。根据终端提示，拔掉任一USB数据线后按下回车，即可在终端打印出被拔掉数据线的端口号。
+
+    python lerobot/scripts/find_motors_bus_port.py
+
+前往`lerobot/common/robot_devices/robots`路径下打开`configs.py`文件，依据个人所组装的机械臂型号更新端口号。  
+如下图红色方框所示：
+
+![ttyACM_change](docs/images/ttyACM_change.png)
+
+
+### 配置舵机ID
+
+将舵机与控制板连接，执行以下命令，即可为连接的舵机配置ID号为`1`，并设置当前位置为`2048`（位置中值）。
+
+    python lerobot/scripts/configure_motor.py \
+       --port /dev/ttyACM0 \
+       --brand feetech \
+       --model sts3215 \
+       --baudrate 1000000 \
+       --ID 1
+
+修改`--ID`参数依次为电机配置ID号，直至到`6`
+
+### 组装机械臂
+
+具体组装细节请参考[Lerobot官方文档](https://github.com/huggingface/lerobot/blob/a445d9c9da6bea99a8972daa4fe1fdd053d711d2/examples/10_use_so100.md#first-motor)
+
+### 标定机械臂
+
+执行以下命令。
+
+    python lerobot/scripts/control_robot.py \
+      --robot.type=so100 \
+      --robot.cameras='{}' \
+      --control.type=calibrate
+
+按照提示摆好对应动作后点击`Enter`。
+
+#### 手动校准Follower_Arm
+
+ | follower_middle | follower_zero | follower_rotated | follower_rest |
+ |------|------|------|------|
+ |![follower_middle](https://github.com/huggingface/lerobot/raw/a445d9c9da6bea99a8972daa4fe1fdd053d711d2/media/so101/follower_middle.webp?raw=true)|![follower_zero](https://github.com/huggingface/lerobot/raw/a445d9c9da6bea99a8972daa4fe1fdd053d711d2/media/so101/follower_zero.webp?raw=true)|![follower_rotated](https://github.com/huggingface/lerobot/raw/a445d9c9da6bea99a8972daa4fe1fdd053d711d2/media/so101/follower_rotated.webp?raw=true)|![follower_rest](https://github.com/huggingface/lerobot/raw/a445d9c9da6bea99a8972daa4fe1fdd053d711d2/media/so101/follower_rest.webp?raw=true)|
+
+#### 手动校准Leader_Arm
+
+ | leader_middle | leader_zero | leader_rotated | leader_rest |
+ |------|------|------|------|
+ |![leader_middle](https://github.com/huggingface/lerobot/raw/a445d9c9da6bea99a8972daa4fe1fdd053d711d2/media/so101/leader_middle.webp?raw=true)|![leader_zero](https://github.com/huggingface/lerobot/raw/a445d9c9da6bea99a8972daa4fe1fdd053d711d2/media/so101/leader_zero.webp?raw=true)|![leader_rotated](https://github.com/huggingface/lerobot/raw/a445d9c9da6bea99a8972daa4fe1fdd053d711d2/media/so101/leader_rotated.webp?raw=true)|![leader_rest](https://github.com/huggingface/lerobot/raw/a445d9c9da6bea99a8972daa4fe1fdd053d711d2/media/so101/leader_rest.webp?raw=true)|
+
+### 遥操作
+
+执行以下命令：
+
+    python lerobot/scripts/control_robot.py \
+      --robot.type=so100 \
+      --robot.cameras='{}' \
+      --control.type=teleoperate
+
+
+**后续操作请参考[Lerobot官方](https://github.com/huggingface/lerobot/blob/a445d9c9da6bea99a8972daa4fe1fdd053d711d2/examples/10_use_so100.md)教程**
 
 
 ## 扩展知识1: 如何解决依赖冲突
 
-根据[lerobot官网](https://github.com/huggingface/lerobot "lerobot")所提供的信息可知，Lerobot兼容的Python版本如红色方框内所示
+根据[Lerobot官网](https://github.com/huggingface/lerobot "lerobot")所提供的信息可知，Lerobot兼容的Python版本如红色方框内所示
 
 ![lerobot_python_version](docs/images/Lerobot_python_version.png)
 
@@ -139,14 +204,14 @@
 
 由此可知，我们需要重新安装Python，使其与Lerobot兼容
 
-因为CANN又依赖Python，如下图所示
+因为[CANN](https://www.hiascend.com/software/cann)又依赖Python，如下图所示
 
 ![Ascend_cann_python_need](docs/images/Ascend_cann_python_need.png)
 
-所以[CANN](https://www.hiascend.com/software/cann)也要重新安装
+**所以CANN也要重新安装**
 
 又因为[Ascend Extension for PyTorch](https://www.hiascend.com/software/ai-frameworks/pytorch)也依赖于CANN版本，所以它也需要重装。  
-顾名思义，它依赖于PyTorch，如下图所示：
+顾名思义，它还依赖于PyTorch，如下图所示：
 
 ![Ascend_pytorch_npu](docs/images/Ascend_pytorch_npu.png)
 
