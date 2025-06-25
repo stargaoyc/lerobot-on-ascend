@@ -80,13 +80,17 @@
 
     cd lerobot-on-ascend
 
+为Lerobot源码打补丁
+
+    git -C lerobot apply ../lerobot_on_ascend.patch --whitespace=fix
+
 安装Lerobot。
 
     pip install -e "lerobot[feetech]"
 
 安装CANN所需的Python依赖
 
-    pip install -r /requirements.txt
+    pip install -r requirements.txt
 
 前往[昇腾资源下载中心](https://www.hiascend.com/developer/download/community/result?module=cann&cann=8.1.RC1.beta1)，下载下图所示的软件包。
 
@@ -228,18 +232,3 @@
 - Python=3.11
 - torch_npu=7.0.0
 - CANN=8.1.RC1.beta1
-
-
-## 扩展知识2：如何使用补丁
-
-进入lerobot目录。
-
-    cd lerobot
-
-检出到特定的历史时刻。（我们是基于这个历史时刻进行开发的）
-
-    git checkout a445d9c9da6bea99a8972daa4fe1fdd053d711d2 
-
-应用git补丁。
-
-    git apply ../lerobot_on_ascend.patch
